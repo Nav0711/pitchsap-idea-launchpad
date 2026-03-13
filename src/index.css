@@ -118,10 +118,10 @@
 
 @layer components {
   .glass-card {
-    @apply bg-[hsl(var(--glass-bg))] backdrop-blur-xl border border-[hsl(var(--glass-border))] shadow-[0_8px_32px_hsl(var(--glass-shadow))];
+    @apply bg-white/40 dark:bg-black/20 backdrop-blur-xl border-white/40 dark:border-white/10 border shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)];
   }
   .glass-card-hover {
-    @apply glass-card transition-all duration-300 hover:shadow-[0_12px_40px_hsl(var(--glass-shadow))] hover:-translate-y-1 hover:border-primary/30;
+    @apply glass-card transition-all duration-300 hover:shadow-[0_16px_50px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_16px_50px_rgba(0,0,0,0.4)] hover:-translate-y-2 hover:bg-white/60 dark:hover:bg-black/40;
   }
   .gradient-primary {
     background: var(--gradient-primary);

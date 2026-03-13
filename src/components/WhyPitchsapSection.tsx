@@ -51,15 +51,21 @@ const WhyPitchsapSection = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              whileHover={{ y: -6, scale: 1.02 }}
-              className="glass-card-hover rounded-xl p-8 group cursor-pointer transition-all duration-300 hover:border-primary/40 hover:shadow-[0_8px_30px_hsl(256_100%_64%/0.15)]"
+              transition={{ delay: i * 0.1, type: "spring", stiffness: 100 }}
+              whileHover={{ y: -6, scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              className="glass-card-hover rounded-2xl p-8 group cursor-pointer relative overflow-hidden flex flex-col justify-between"
             >
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${block.color} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
-                <block.icon className="h-6 w-6 text-primary-foreground" />
+              {/* Subtle gradient background on hover */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${block.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-2xl`} />
+
+              <div className="relative z-10">
+                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${block.color} flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg`}>
+                  <block.icon className="h-7 w-7 text-white drop-shadow-sm" />
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors">{block.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed group-hover:text-foreground/80 transition-colors">{block.desc}</p>
               </div>
-              <h3 className="text-lg font-bold mb-3 text-foreground group-hover:text-primary transition-colors">{block.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{block.desc}</p>
             </motion.div>
           ))}
         </div>

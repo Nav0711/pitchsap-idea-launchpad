@@ -25,77 +25,98 @@ const HowItWorksSection = () => {
   const steps = activeTab === "ideator" ? ideatorSteps : consultantSteps;
 
   return (
-    <section id="how-it-works" className="py-24 relative z-10">
-      <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">How It Works</h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Whether you're an ideator or a consultant, Pitchsap has a clear path for you.
-          </p>
-        </motion.div>
+    <section id="how-it-works" className="py-24 px-4 sm:px-6 md:px-8 lg:px-12 relative z-10">
+      <div className="max-w-7xl mx-auto glass-card rounded-[2.5rem] border-white/20 dark:border-white/10 backdrop-blur-3xl bg-white/10 dark:bg-black/20 p-8 sm:p-12 md:p-16 shadow-2xl overflow-hidden relative">
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 blur-3xl rounded-full -mr-48 -mt-48 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/5 blur-3xl rounded-full -ml-48 -mb-48 pointer-events-none" />
 
-        <div className="flex justify-center mb-12">
-          <div className="glass-card rounded-full p-1 flex gap-1">
-            <button
-              onClick={() => setActiveTab("ideator")}
-              className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all ${
-                activeTab === "ideator"
-                  ? "gradient-primary text-primary-foreground shadow-lg"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Ideator
-            </button>
-            <button
-              onClick={() => setActiveTab("consultant")}
-              className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all ${
-                activeTab === "consultant"
-                  ? "gradient-primary text-primary-foreground shadow-lg"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Consultant
-            </button>
-          </div>
-        </div>
-
-        <AnimatePresence mode="wait">
+        <div className="relative z-10">
           <motion.div
-            key={activeTab}
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto"
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
           >
-            {steps.map((step, i) => (
-              <motion.div
-                key={step.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08 }}
-                whileHover={{ y: -6, scale: 1.02 }}
-                className="glass-card-hover rounded-xl p-6 group cursor-pointer transition-all duration-300 hover:border-primary/40 hover:shadow-[0_8px_30px_hsl(256_100%_64%/0.15)]"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-lg gradient-primary flex items-center justify-center text-primary-foreground group-hover:scale-110 transition-transform duration-300">
-                    <step.icon className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <span className="text-xs font-semibold text-primary mb-1 block">Step {i + 1}</span>
-                    <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">{step.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+            <h2 className="text-3xl md:text-5xl font-extrabold mb-6 tracking-tight text-white dark:text-white drop-shadow-md">
+              How It Works
+            </h2>
+            <p className="text-white/80 dark:text-purple-100/70 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-medium">
+              Whether you're an ideator or a consultant, Pitchsap has a clear path for you.
+            </p>
           </motion.div>
-        </AnimatePresence>
+
+          <div className="flex justify-center mb-16">
+            <div className="bg-black/20 dark:bg-black/40 backdrop-blur-xl rounded-full p-1.5 flex gap-1 border border-white/10 shadow-inner">
+              <button
+                onClick={() => setActiveTab("ideator")}
+                className={`px-8 py-3 rounded-full text-sm md:text-base font-bold transition-all duration-300 ${
+                  activeTab === "ideator"
+                    ? "bg-white text-purple-900 shadow-xl scale-105"
+                    : "text-white/60 hover:text-white"
+                }`}
+              >
+                Ideator
+              </button>
+              <button
+                onClick={() => setActiveTab("consultant")}
+                className={`px-8 py-3 rounded-full text-sm md:text-base font-bold transition-all duration-300 ${
+                  activeTab === "consultant"
+                    ? "bg-white text-purple-900 shadow-xl scale-105"
+                    : "text-white/60 hover:text-white"
+                }`}
+              >
+                Consultant
+              </button>
+            </div>
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -30 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              {steps.map((step, i) => (
+                <motion.div
+                  key={step.title}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, duration: 0.4 }}
+                  whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                  className="bg-white/5 dark:bg-white/5 border border-white/10 hover:border-white/20 transition-all duration-300 rounded-[2rem] p-8 group relative overflow-hidden flex flex-col h-full"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  <div className="relative z-10 flex flex-col h-full">
+                    <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-white text-purple-900 flex items-center justify-center mb-8 shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                      <step.icon className="h-7 w-7" />
+                    </div>
+                    
+                    <div className="mt-auto">
+                      <div className="flex items-center gap-3 mb-4">
+                        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white/20 text-white text-[10px] font-bold uppercase tracking-wider">
+                          {i + 1}
+                        </span>
+                        <span className="text-xs font-bold uppercase tracking-widest text-white/50">Step {i + 1}</span>
+                      </div>
+                      <h3 className="font-bold text-xl text-white mb-3 group-hover:text-white transition-colors">
+                        {step.title}
+                      </h3>
+                      <p className="text-sm md:text-base text-white/70 leading-relaxed font-medium">
+                        {step.desc}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
     </section>
   );

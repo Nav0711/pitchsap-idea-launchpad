@@ -38,15 +38,21 @@ const CapabilitiesSection = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.08 }}
-              whileHover={{ y: -6, scale: 1.02 }}
-              className="glass-card-hover rounded-xl p-6 text-center cursor-pointer transition-all duration-300 hover:border-primary/40 hover:shadow-[0_8px_30px_hsl(256_100%_64%/0.15)]"
+              transition={{ delay: i * 0.08, type: "spring", stiffness: 100 }}
+              whileHover={{ y: -6, scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              className="glass-card-hover rounded-2xl p-6 text-center cursor-pointer relative overflow-hidden flex flex-col items-center justify-between group"
             >
-              <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center mx-auto mb-4 text-primary-foreground group-hover:scale-110 transition-transform">
-                <cap.icon className="h-6 w-6" />
+              {/* Subtle gradient background on hover */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
+
+              <div className="relative z-10">
+                <div className="w-14 h-14 rounded-2xl gradient-primary flex items-center justify-center mx-auto mb-5 text-primary-foreground group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                  <cap.icon className="h-7 w-7 drop-shadow-sm" />
+                </div>
+                <h3 className="font-bold text-lg mb-2 text-foreground group-hover:text-primary transition-colors">{cap.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed group-hover:text-foreground/80 transition-colors">{cap.desc}</p>
               </div>
-              <h3 className="font-semibold mb-2 text-foreground">{cap.title}</h3>
-              <p className="text-sm text-muted-foreground">{cap.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -62,13 +68,19 @@ const CapabilitiesSection = () => {
             {steps.map((step, i) => (
               <motion.div
                 key={i}
-                whileHover={{ y: -4, scale: 1.03 }}
-                className="glass-card rounded-xl p-5 text-center relative cursor-pointer hover:border-primary/30 transition-all duration-300 hover:shadow-[0_8px_20px_hsl(256_100%_64%/0.1)]"
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, type: "spring", stiffness: 120 }}
+                whileHover={{ y: -4, scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="glass-card-hover rounded-2xl p-5 text-center relative cursor-pointer group"
               >
-                <div className="w-8 h-8 rounded-full gradient-primary text-primary-foreground flex items-center justify-center text-sm font-bold mx-auto mb-3">
+                <div className="absolute inset-0 bg-gradient-to-tr from-accent/5 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
+                <div className="w-10 h-10 rounded-full gradient-primary text-primary-foreground flex items-center justify-center text-sm font-bold mx-auto mb-3 shadow-md group-hover:scale-110 transition-transform duration-300 relative z-10">
                   {i + 1}
                 </div>
-                <p className="text-sm font-medium text-foreground">{step}</p>
+                <p className="text-sm font-bold text-foreground relative z-10 group-hover:text-primary transition-colors">{step}</p>
               </motion.div>
             ))}
           </div>

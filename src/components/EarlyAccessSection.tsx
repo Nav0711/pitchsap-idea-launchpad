@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowRight } from "lucide-react";
 import { toast } from "sonner";
+import { VantaBackground } from "@/components/VantaBackground";
 
 const EarlyAccessSection = () => {
   const [email, setEmail] = useState("");
@@ -17,8 +18,9 @@ const EarlyAccessSection = () => {
   };
 
   return (
-    <section className="py-24">
-      <div className="container mx-auto px-4">
+    <section className="py-24 relative overflow-hidden">
+      <VantaBackground />
+      <div className="container mx-auto px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

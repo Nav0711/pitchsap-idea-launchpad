@@ -3,7 +3,7 @@ import { Users, Handshake, Globe } from "lucide-react";
 
 const CommunitySection = () => {
   return (
-    <section className="py-24 relative z-10">
+    <section className="py-24 relative z-10 bg-pink-100 dark:bg-violet-950">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

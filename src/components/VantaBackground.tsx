@@ -33,8 +33,8 @@ export const VantaBackground = () => {
           lowlightColor: isDark ? 0x8900a2 : 0x9d4edd,
           baseColor: isDark ? 0x000000 : 0xffffff,
           blurFactor: 0.50,
-          speed: 2.5,
-          zoom: 3
+          speed: 2,
+          zoom: 0.5
         });
       }
     };
@@ -56,7 +56,7 @@ export const VantaBackground = () => {
     <div 
       ref={vantaRef}
       // Absolute inset-0 makes it stick to the parent relative container and flow with scroll height
-      className="absolute inset-0 w-full h-full min-h-screen -z-50 pointer-events-none" 
+      className="absolute inset-0 w-full h-full -z-10 pointer-events-none" 
     />
   );
 };

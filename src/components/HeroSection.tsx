@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { VantaBackground } from "@/components/VantaBackground";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen pt-24 pb-12 px-4 sm:px-6 md:px-8 lg:px-12 flex items-center justify-center">
+    <section className="relative min-h-screen pt-24 pb-12 px-4 sm:px-6 md:px-8 lg:px-12 flex items-center justify-center overflow-hidden">
+      <VantaBackground />
       {/* The Glassmorphism Container (lesser in size from borders) */}
       <div className="w-full max-w-7xl min-h-[calc(100vh-10rem)] glass-card bg-white/10 dark:bg-black/20 border-white/20 backdrop-blur-xl rounded-[2.5rem] flex flex-col items-center justify-center shadow-2xl relative p-6 sm:p-12 md:p-16 lg:p-24 overflow-hidden">
         

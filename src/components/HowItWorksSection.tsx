@@ -25,7 +25,7 @@ const HowItWorksSection = () => {
   const steps = activeTab === "ideator" ? ideatorSteps : consultantSteps;
 
   return (
-    <section id="how-it-works" className="py-24 px-4 sm:px-6 md:px-8 lg:px-12 relative z-10">
+    <section id="how-it-works" className="py-24 px-4 sm:px-6 md:px-8 lg:px-12 relative z-10 bg-pink-100 dark:bg-violet-950">
       <div className="max-w-7xl mx-auto glass-card rounded-[2.5rem] border-white/20 dark:border-white/10 backdrop-blur-3xl bg-white/10 dark:bg-black/20 p-8 sm:p-12 md:p-16 shadow-2xl overflow-hidden relative">
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 blur-3xl rounded-full -mr-48 -mt-48 pointer-events-none" />

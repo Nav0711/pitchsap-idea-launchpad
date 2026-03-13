@@ -6,35 +6,35 @@
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 222 47% 11%;
+    --background: 270 30% 97%;
+    --foreground: 263 60% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 263 60% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 263 60% 12%;
 
-    --primary: 256 100% 64%;
+    --primary: 256 100% 60%;
     --primary-foreground: 0 0% 100%;
 
     --primary-deep: 263 69% 42%;
 
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 270 40% 93%;
+    --secondary-foreground: 263 60% 12%;
 
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 270 30% 92%;
+    --muted-foreground: 263 30% 35%;  /* was too light, now legible dark purple-grey */
 
-    --accent: 160 84% 39%;
+    --accent: 160 84% 35%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 256 100% 64%;
+    --border: 270 30% 85%;
+    --input: 270 30% 88%;
+    --ring: 256 100% 60%;
 
     --radius: 0.75rem;
 
@@ -42,7 +42,7 @@
     --glass-border: 0 0% 100% / 0.8;
     --glass-shadow: 256 100% 64% / 0.08;
 
-    --gradient-primary: linear-gradient(135deg, hsl(256 100% 64%), hsl(263 69% 42%));
+    --gradient-primary: linear-gradient(135deg, hsl(256 100% 60%), hsl(263 69% 42%));
     --gradient-hero-orb: radial-gradient(circle at 50% 50%, hsl(256 100% 64% / 0.25), transparent 70%);
 
     --sidebar-background: 0 0% 98%;
@@ -117,12 +117,31 @@
 }
 
 @layer components {
+  /* ── Glass card (sections over static background) ─────────────────────── */
   .glass-card {
-    @apply bg-white/40 dark:bg-black/20 backdrop-blur-xl border-white/40 dark:border-white/10 border shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)];
+    @apply
+      bg-white/90 dark:bg-white/5
+      backdrop-blur-xl
+      border border-purple-200 dark:border-white/10
+      shadow-[0_4px_24px_rgba(109,40,217,0.07)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3)];
   }
   .glass-card-hover {
-    @apply glass-card transition-all duration-300 hover:shadow-[0_16px_50px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_16px_50px_rgba(0,0,0,0.4)] hover:-translate-y-2 hover:bg-white/60 dark:hover:bg-black/40;
+    @apply glass-card transition-all duration-300
+      hover:shadow-[0_12px_40px_rgba(109,40,217,0.16)] dark:hover:shadow-[0_16px_50px_rgba(0,0,0,0.4)]
+      hover:-translate-y-1.5 hover:bg-white dark:hover:bg-white/10
+      cursor-pointer;
   }
+
+  /* ── Dark glass card (hero / over Vanta) ─────────────────────────────── */
+  .glass-hero-card {
+    background: rgba(10, 0, 30, 0.58);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 24px 64px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+
+  /* ── Gradient utilities ──────────────────────────────────────────────── */
   .gradient-primary {
     background: var(--gradient-primary);
   }
@@ -134,5 +153,49 @@
   }
   .hero-orb {
     background: var(--gradient-hero-orb);
+  }
+
+  /* ── Micro-interaction utilities ─────────────────────────────────────── */
+
+  /* Shimmer sweep on hover */
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.22) 50%, transparent 60%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+  }
+  .shimmer:hover::after {
+    transform: translateX(100%);
+  }
+
+  /* Attention ring pulse (badges, CTAs) */
+  .ring-pulse {
+    animation: ringPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes ringPulse {
+    0%, 100% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0.4); }
+    50%       { box-shadow: 0 0 0 8px hsl(var(--primary) / 0); }
+  }
+
+  /* Hover float (used on cards that don't extend glass-card-hover) */
+  .hover-float {
+    @apply transition-transform duration-250 ease-out;
+  }
+  .hover-float:hover {
+    transform: translateY(-6px);
+  }
+
+  /* Magnetic-like scale on interactive elements */
+  .interactive {
+    @apply transition-transform duration-200 active:scale-95;
+  }
+  .interactive:hover {
+    transform: scale(1.04);
   }
 }

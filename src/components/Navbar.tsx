@@ -42,9 +42,8 @@ const Navbar = () => {
           <div className="hidden md:flex items-center justify-between px-8 py-3">
             <Link to="/" className="flex items-center gap-2 group transition-all duration-300">
               <div className="bg-white/10 p-1.5 rounded-xl backdrop-blur-md group-hover:scale-110 transition-transform">
-                <img src={pitchsapLogo} alt="Pitchsap" className="h-7 w-auto mix-blend-screen" />
+                <img src={pitchsapLogo} alt="Pitchsap" className="h-8 w-auto mix-blend-screen" />
               </div>
-              <span className="font-display text-xl font-bold text-foreground">Pitchsap</span>
             </Link>
 
             <div className="flex items-center">

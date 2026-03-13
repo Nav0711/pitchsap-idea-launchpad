@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import WhyPitchsapSection from "@/components/WhyPitchsapSection";
-import CapabilitiesSection from "@/components/CapabilitiesSection";
+// import CapabilitiesSection from "@/components/CapabilitiesSection";
 import CommunitySection from "@/components/CommunitySection";
 import EarlyAccessSection from "@/components/EarlyAccessSection";
 import BlogPreviewSection from "@/components/BlogPreviewSection";
@@ -16,7 +16,7 @@ const Index = () => {
       <HeroSection />
       <HowItWorksSection />
       <WhyPitchsapSection />
-      <CapabilitiesSection />
+      {/* <CapabilitiesSection /> */}
       <CommunitySection />
       <EarlyAccessSection />
       <BlogPreviewSection />

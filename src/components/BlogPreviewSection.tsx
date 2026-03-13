@@ -8,16 +8,19 @@ import blog3 from "@/assets/blog-3.jpg";
 const blogs = [
   {
     image: blog1,
+    tag: "Validation",
     title: "How to Validate Your Startup Idea in 2025",
-    desc: "Learn proven frameworks for testing your startup concept before investing significant time and resources.",
+    desc: "Proven frameworks for testing your startup concept before investing significant time and resources.",
   },
   {
     image: blog2,
+    tag: "AI & Mentorship",
     title: "AI in Startup Mentorship: The Future is Now",
-    desc: "Discover how artificial intelligence is transforming the way founders get feedback and refine their pitches.",
+    desc: "How artificial intelligence is transforming the way founders get feedback and refine their pitches.",
   },
   {
     image: blog3,
+    tag: "Growth",
     title: "Building a Mentorship Network That Works",
     desc: "Expert strategies for connecting with the right mentors to accelerate your startup journey.",
   },
@@ -25,54 +28,82 @@ const blogs = [
 
 const BlogPreviewSection = () => {
   return (
-    <section className="py-24 relative z-10 bg-pink-100 dark:bg-violet-950">
-      <div className="container mx-auto px-4">
+    <section className="py-20 px-4 sm:px-6 md:px-10 relative z-10">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex items-end justify-between mb-12"
+          transition={{ duration: 0.5 }}
+          className="flex items-end justify-between mb-10"
         >
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-2">Latest from the Blog</h2>
-            <p className="text-muted-foreground">Insights and guides for founders.</p>
+            <span className="inline-flex items-center gap-2 mb-3 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-bold text-primary uppercase tracking-widest">
+              From the Blog
+            </span>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-foreground">Insights for Founders</h2>
           </div>
-          <Link to="/blog" className="hidden sm:flex items-center gap-1 text-primary font-medium text-sm hover:underline">
-            View all <ArrowRight className="h-4 w-4" />
-          </Link>
+          <motion.div whileHover={{ x: 4 }} className="hidden sm:flex">
+            <Link
+              to="/blog"
+              className="flex items-center gap-1 text-primary font-semibold text-sm hover:underline underline-offset-4 transition-all"
+            >
+              View all <ArrowRight className="h-4 w-4" />
+            </Link>
+          </motion.div>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {blogs.map((blog, i) => (
             <motion.div
               key={blog.title}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              whileHover={{ y: -6, scale: 1.02 }}
-              className="glass-card-hover rounded-xl overflow-hidden group cursor-pointer transition-all duration-300 hover:border-primary/40 hover:shadow-[0_8px_30px_hsl(256_100%_64%/0.15)]"
+              transition={{ delay: i * 0.1, duration: 0.45 }}
+              whileHover={{ y: -8, transition: { duration: 0.2, ease: "easeOut" } }}
+              whileTap={{ scale: 0.98 }}
+              className="glass-card-hover rounded-2xl overflow-hidden group cursor-pointer shimmer"
             >
-              <div className="aspect-video overflow-hidden">
-                <img
+              {/* Image with zoom */}
+              <div className="aspect-[16/9] overflow-hidden">
+                <motion.img
                   src={blog.image}
                   alt={blog.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-full object-cover"
+                  whileHover={{ scale: 1.08 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
                   loading="lazy"
                 />
               </div>
+              
               <div className="p-6">
-                <h3 className="font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
+                {/* Tag */}
+                <span className="inline-block mb-3 text-[11px] font-bold uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full">
+                  {blog.tag}
+                </span>
+                <h3 className="font-bold text-base text-foreground mb-2 group-hover:text-primary transition-colors duration-200 leading-snug">
                   {blog.title}
                 </h3>
-                <p className="text-sm text-muted-foreground">{blog.desc}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{blog.desc}</p>
+                {/* Read more arrow */}
+                <motion.div
+                  className="mt-4 flex items-center gap-1 text-xs font-semibold text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  animate={{ x: 0 }}
+                  whileHover={{ x: 4 }}
+                >
+                  Read more <ArrowRight className="h-3.5 w-3.5" />
+                </motion.div>
               </div>
             </motion.div>
           ))}
         </div>
 
+        {/* Mobile view all */}
         <div className="sm:hidden mt-6 text-center">
-          <Link to="/blog" className="text-primary font-medium text-sm">
+          <Link to="/blog" className="text-primary font-semibold text-sm">
             View all posts →
           </Link>
         </div>

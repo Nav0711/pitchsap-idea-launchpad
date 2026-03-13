@@ -25,7 +25,7 @@ const HowItWorksSection = () => {
   const steps = activeTab === "ideator" ? ideatorSteps : consultantSteps;
 
   return (
-    <section id="how-it-works" className="py-24">
+    <section id="how-it-works" className="py-24 relative z-10">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -39,7 +39,6 @@ const HowItWorksSection = () => {
           </p>
         </motion.div>
 
-        {/* Toggle */}
         <div className="flex justify-center mb-12">
           <div className="glass-card rounded-full p-1 flex gap-1">
             <button
@@ -65,7 +64,6 @@ const HowItWorksSection = () => {
           </div>
         </div>
 
-        {/* Cards */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
@@ -81,15 +79,16 @@ const HowItWorksSection = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08 }}
-                className="glass-card-hover rounded-xl p-6 group"
+                whileHover={{ y: -6, scale: 1.02 }}
+                className="glass-card-hover rounded-xl p-6 group cursor-pointer transition-all duration-300 hover:border-primary/40 hover:shadow-[0_8px_30px_hsl(256_100%_64%/0.15)]"
               >
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-lg gradient-primary flex items-center justify-center text-primary-foreground">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-lg gradient-primary flex items-center justify-center text-primary-foreground group-hover:scale-110 transition-transform duration-300">
                     <step.icon className="h-5 w-5" />
                   </div>
                   <div>
                     <span className="text-xs font-semibold text-primary mb-1 block">Step {i + 1}</span>
-                    <h3 className="font-semibold text-foreground mb-1">{step.title}</h3>
+                    <h3 className="font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">{step.title}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
                   </div>
                 </div>

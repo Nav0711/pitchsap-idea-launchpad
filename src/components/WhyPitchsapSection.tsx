@@ -30,7 +30,7 @@ const blocks = [
 
 const WhyPitchsapSection = () => {
   return (
-    <section className="py-24 relative">
+    <section className="py-24 relative z-10">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -52,12 +52,13 @@ const WhyPitchsapSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="glass-card-hover rounded-xl p-8 group"
+              whileHover={{ y: -6, scale: 1.02 }}
+              className="glass-card-hover rounded-xl p-8 group cursor-pointer transition-all duration-300 hover:border-primary/40 hover:shadow-[0_8px_30px_hsl(256_100%_64%/0.15)]"
             >
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${block.color} flex items-center justify-center mb-5`}>
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${block.color} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
                 <block.icon className="h-6 w-6 text-primary-foreground" />
               </div>
-              <h3 className="text-lg font-bold mb-3 text-foreground">{block.title}</h3>
+              <h3 className="text-lg font-bold mb-3 text-foreground group-hover:text-primary transition-colors">{block.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{block.desc}</p>
             </motion.div>
           ))}

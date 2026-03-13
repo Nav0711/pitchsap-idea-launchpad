@@ -17,10 +17,15 @@ const HeroSection = () => {
           transition={{ duration: 0.7 }}
           className="max-w-3xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-1.5 text-sm font-medium text-muted-foreground mb-8">
-            <span className="w-2 h-2 rounded-full bg-accent" />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-1.5 text-sm font-medium text-muted-foreground mb-8"
+          >
+            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
             AI-Powered Startup Validation
-          </div>
+          </motion.div>
 
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1] mb-6">
             Ideas are wild.
@@ -32,14 +37,19 @@ const HeroSection = () => {
             Turn ideas into action with confidence. Pitchsap combines expert guidance, AI-powered insights, and community feedback to help you shape, validate, and move forward with clarity.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="gradient-primary text-primary-foreground border-0 text-base px-8 h-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+          >
+            <Button size="lg" className="gradient-primary text-primary-foreground border-0 text-base px-8 h-12 hover:scale-105 transition-transform">
               Get Started <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
-            <Button size="lg" variant="outline" className="text-base px-8 h-12">
+            <Button size="lg" variant="outline" className="text-base px-8 h-12 hover:scale-105 transition-transform">
               Learn More
             </Button>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

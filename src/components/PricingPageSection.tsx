@@ -21,7 +21,7 @@ const TIERS: PricingTier[] = [
   },
   {
     name: "Founder",
-    price: { monthly: 29, yearly: 19 },
+    price: { monthly: 99, yearly: 999 },
     description: "For serious ideators validating their startup",
     features: [
       "Unlimited idea submissions",
@@ -35,7 +35,7 @@ const TIERS: PricingTier[] = [
   },
   {
     name: "Growth",
-    price: { monthly: 79, yearly: 59 },
+    price: { monthly: 119, yearly: 1199 },
     description: "For teams and scaling startups",
     features: [
       "Everything in Founder",

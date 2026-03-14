@@ -56,11 +56,11 @@ export function PricingCard({ tier, paymentFrequency }: PricingCardProps) {
           <>
             <NumberFlow
               value={price}
-              format={{ style: "currency", currency: "USD", minimumFractionDigits: 0 }}
+              format={{ style: "currency", currency: "INR", minimumFractionDigits: 0 }}
               className="text-4xl font-bold text-foreground"
             />
             <span className="text-sm text-muted-foreground ml-1">
-              Per month/user
+              / month
             </span>
           </>
         ) : (

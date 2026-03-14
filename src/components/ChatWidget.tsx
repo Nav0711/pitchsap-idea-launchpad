@@ -9,8 +9,10 @@ interface ChatWidgetProps {
   isLoggedIn: boolean
 }
 
-const MOCK_MESSAGES = [
-  { id: 1, text: "Hi! How can I help you today?", sender: "bot" as const, time: "Just now" },
+type ChatMessage = { id: number; text: string; sender: "bot" | "user"; time: string }
+
+const MOCK_MESSAGES: ChatMessage[] = [
+  { id: 1, text: "Hi! How can I help you today?", sender: "bot", time: "Just now" },
 ]
 
 const ChatWidget = ({ isLoggedIn }: ChatWidgetProps) => {

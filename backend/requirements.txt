@@ -1,1 +1,9 @@
-wheel==0.45.1
+fastapi
+uvicorn[standard]
+sqlalchemy
+asyncpg
+aiosqlite
+psycopg2-binary
+python-jose[cryptography]
+bcrypt
+python-dotenv

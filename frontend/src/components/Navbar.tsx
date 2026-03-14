@@ -25,6 +25,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    localStorage.removeItem("pitchsap_token");
     localStorage.removeItem("pitchsap_logged_in");
     localStorage.removeItem("pitchsap_user");
     navigate("/");

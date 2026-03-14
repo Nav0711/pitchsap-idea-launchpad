@@ -13,15 +13,80 @@ const AuthPage = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [name, setName] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [errorMsg, setErrorMsg] = useState("")
   const navigate = useNavigate()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Mock login — store flag and redirect
-    localStorage.setItem("pitchsap_logged_in", "true")
-    localStorage.setItem("pitchsap_user", JSON.stringify({ name: name || "User", email }))
-    navigate("/")
-    window.location.reload()
+    setIsLoading(true)
+    setErrorMsg("")
+
+    try {
+      const baseUrl = "http://localhost:8000/api/auth"
+      
+      if (isLogin) {
+        // Login Flow (OAuth2 Form Data expected by FastAPI)
+        const formData = new URLSearchParams()
+        formData.append("username", email)
+        formData.append("password", password)
+
+        const res = await fetch(`${baseUrl}/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: formData,
+        })
+        
+        if (!res.ok) {
+          const data = await res.json()
+          throw new Error(data.detail || "Login failed")
+        }
+        
+        const data = await res.json()
+        localStorage.setItem("pitchsap_token", data.access_token)
+        localStorage.setItem("pitchsap_logged_in", "true")
+        localStorage.setItem("pitchsap_user", JSON.stringify({ email }))
+        
+        navigate("/")
+        window.location.reload()
+      } else {
+        // Registration Flow (JSON expected by FastAPI)
+        const res = await fetch(`${baseUrl}/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password, full_name: name }),
+        })
+        
+        if (!res.ok) {
+          const data = await res.json()
+          throw new Error(data.detail || "Registration failed")
+        }
+        
+        // Auto login after registration
+        const formData = new URLSearchParams()
+        formData.append("username", email)
+        formData.append("password", password)
+
+        const loginRes = await fetch(`${baseUrl}/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: formData,
+        })
+        
+        if (loginRes.ok) {
+          const loginData = await loginRes.json()
+          localStorage.setItem("pitchsap_token", loginData.access_token)
+          localStorage.setItem("pitchsap_logged_in", "true")
+          localStorage.setItem("pitchsap_user", JSON.stringify({ name, email }))
+          navigate("/")
+          window.location.reload()
+        }
+      }
+    } catch (err: any) {
+      setErrorMsg(err.message || "An error occurred")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -46,6 +111,12 @@ const AuthPage = () => {
                   : "Start your startup journey today"}
               </p>
             </div>
+
+            {errorMsg && (
+              <div className="p-3 rounded-xl bg-red-500/10 text-red-500 text-sm text-center border border-red-500/20">
+                {errorMsg}
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
               {!isLogin && (
@@ -92,18 +163,23 @@ const AuthPage = () => {
 
               <Button
                 type="submit"
-                className="w-full h-12 rounded-xl gradient-primary text-primary-foreground font-bold text-base hover:scale-[1.02] transition-transform"
+                disabled={isLoading}
+                className="w-full h-12 rounded-xl gradient-primary text-primary-foreground font-bold text-base hover:scale-[1.02] transition-transform disabled:opacity-70 disabled:hover:scale-100"
               >
-                {isLogin ? "Log In" : "Sign Up"}
-                <ArrowRight className="ml-2 h-4 w-4" />
+                {isLoading ? "Processing..." : (isLogin ? "Log In" : "Sign Up")}
+                {!isLoading && <ArrowRight className="ml-2 h-4 w-4" />}
               </Button>
             </form>
 
             <div className="text-center text-sm text-muted-foreground">
               {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
               <button
-                onClick={() => setIsLogin(!isLogin)}
+                onClick={() => {
+                  setIsLogin(!isLogin)
+                  setErrorMsg("")
+                }}
                 className="text-primary font-semibold hover:underline"
+                type="button"
               >
                 {isLogin ? "Sign Up" : "Log In"}
               </button>

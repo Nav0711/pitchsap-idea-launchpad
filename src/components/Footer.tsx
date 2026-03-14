@@ -11,8 +11,8 @@ const Footer = () => {
           <nav className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
             <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
             <Link to="/blog" className="hover:text-foreground transition-colors">Blog</Link>
-            <a href="#" className="hover:text-foreground transition-colors">Login</a>
-            <a href="#" className="hover:text-foreground transition-colors">Sign Up</a>
+            <Link to="/auth" className="hover:text-foreground transition-colors">Login</Link>
+            <Link to="/auth" className="hover:text-foreground transition-colors">Sign Up</Link>
             <a href="#" className="hover:text-foreground transition-colors">Terms of Service</a>
             <a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a>
           </nav>

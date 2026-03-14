@@ -155,6 +155,22 @@
     background: var(--gradient-hero-orb);
   }
 
+  /* ── Alternating section backgrounds ─────────────────────────────────────── */
+  /* "A" tint – slightly cool lavender */
+  .section-bg-a {
+    background-color: hsl(270 35% 97%);
+  }
+  .dark .section-bg-a {
+    background-color: hsl(263 30% 8%);
+  }
+  /* "B" tint – slightly warmer rose-purple */
+  .section-bg-b {
+    background-color: hsl(285 30% 95%);
+  }
+  .dark .section-bg-b {
+    background-color: hsl(270 25% 11%);
+  }
+
   /* ── Micro-interaction utilities ─────────────────────────────────────── */
 
   /* Shimmer sweep on hover */

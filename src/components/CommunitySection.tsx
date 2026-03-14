@@ -9,7 +9,7 @@ const stats = [
 
 const CommunitySection = () => {
   return (
-    <section className="py-20 px-4 sm:px-6 md:px-10 relative z-10">
+    <section className="py-20 px-4 sm:px-6 md:px-10 relative z-10 section-bg-a">
       <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 24 }}

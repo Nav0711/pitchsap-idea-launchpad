@@ -16,7 +16,6 @@ const Index = () => {
       <HeroSection />
       <HowItWorksSection />
       <WhyPitchsapSection />
-      {/* <CapabilitiesSection /> */}
       <CommunitySection />
       <EarlyAccessSection />
       <BlogPreviewSection />

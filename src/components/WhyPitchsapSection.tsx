@@ -34,7 +34,7 @@ const pillars = [
 
 const WhyPitchsapSection = () => {
   return (
-    <section className="py-20 px-4 sm:px-6 md:px-10 relative z-10">
+    <section className="py-20 px-4 sm:px-6 md:px-10 relative z-10 section-bg-b">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div

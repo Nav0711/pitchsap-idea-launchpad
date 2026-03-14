@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -43,19 +44,23 @@ const HeroSection = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                size="lg"
-                className="bg-white text-purple-950 font-bold border-0 text-base px-8 h-14 rounded-2xl hover:scale-105 hover:bg-purple-50 transition-all shadow-[0_0_40px_rgba(255,255,255,0.35)]"
-              >
-                Get Started <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="text-base px-8 h-14 rounded-2xl hover:scale-105 transition-all border-white/30 text-white bg-white/5 hover:bg-white/15 backdrop-blur-sm font-medium"
-              >
-                Learn More
-              </Button>
+              <Link to="/auth" className="w-full sm:w-auto">
+                <Button
+                  size="lg"
+                  className="w-full bg-white text-purple-950 font-bold border-0 text-base px-8 h-14 rounded-2xl hover:scale-105 hover:bg-purple-50 transition-all shadow-[0_0_40px_rgba(255,255,255,0.35)]"
+                >
+                  Get Started <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+              <a href="#how-it-works" className="w-full sm:w-auto">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="w-full text-base px-8 h-14 rounded-2xl hover:scale-105 transition-all border-white/30 text-white bg-white/5 hover:bg-white/15 backdrop-blur-sm font-medium"
+                >
+                  Learn More
+                </Button>
+              </a>
             </div>
           </div>
         </motion.div>
@@ -70,6 +75,8 @@ const HeroSection = () => {
           <img
             src={heroLaptop}
             alt="Pitchsap dashboard on laptop"
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover rounded-[2rem] shadow-[0_30px_80px_rgba(0,0,0,0.6)] border border-white/10"
           />
         </motion.div>

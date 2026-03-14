@@ -10,12 +10,15 @@ import AuthPage from "./pages/AuthPage.tsx";
 import ChatPage from "./pages/ChatPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
+import CursorGlow from "./components/CursorGlow.tsx";
+
 const queryClient = new QueryClient();
 
 const App = () => (
   <ThemeProvider>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <CursorGlow />
         <Toaster />
         <Sonner />
         <BrowserRouter>

@@ -54,8 +54,8 @@ const BlogPreviewSection = () => {
           </motion.div>
         </motion.div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {/* ── DESKTOP: 3-col grid ── */}
+        <div className="hidden sm:grid sm:grid-cols-3 gap-5">
           {blogs.map((blog, i) => (
             <motion.div
               key={blog.title}
@@ -67,7 +67,6 @@ const BlogPreviewSection = () => {
               whileTap={{ scale: 0.98 }}
               className="glass-card-hover rounded-2xl overflow-hidden group cursor-pointer shimmer"
             >
-              {/* Image with zoom */}
               <div className="aspect-[16/9] overflow-hidden">
                 <motion.img
                   src={blog.image}
@@ -78,9 +77,7 @@ const BlogPreviewSection = () => {
                   loading="lazy"
                 />
               </div>
-              
               <div className="p-6">
-                {/* Tag */}
                 <span className="inline-block mb-3 text-[11px] font-bold uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full">
                   {blog.tag}
                 </span>
@@ -88,14 +85,47 @@ const BlogPreviewSection = () => {
                   {blog.title}
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{blog.desc}</p>
-                {/* Read more arrow */}
                 <motion.div
                   className="mt-4 flex items-center gap-1 text-xs font-semibold text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  animate={{ x: 0 }}
                   whileHover={{ x: 4 }}
                 >
                   Read more <ArrowRight className="h-3.5 w-3.5" />
                 </motion.div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* ── MOBILE: compact horizontal cards (image left, text right) ── */}
+        <div className="sm:hidden flex flex-col gap-3">
+          {blogs.map((blog, i) => (
+            <motion.div
+              key={blog.title}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08, duration: 0.35 }}
+              whileTap={{ scale: 0.97 }}
+              className="flex gap-3 rounded-2xl overflow-hidden backdrop-blur-xl bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 shadow-[0_4px_14px_rgba(0,0,0,0.06)] ring-1 ring-white/10 p-2.5 cursor-pointer group"
+            >
+              {/* Thumbnail */}
+              <div className="w-20 h-20 shrink-0 rounded-xl overflow-hidden">
+                <img
+                  src={blog.image}
+                  alt={blog.title}
+                  loading="lazy"
+                  className="w-full h-full object-cover group-active:scale-105 transition-transform duration-300"
+                />
+              </div>
+              {/* Text */}
+              <div className="flex flex-col justify-center min-w-0">
+                <span className="text-[9px] font-bold uppercase tracking-widest text-primary bg-primary/10 px-2 py-0.5 rounded-full w-fit mb-1">
+                  {blog.tag}
+                </span>
+                <h3 className="font-bold text-xs text-foreground leading-snug line-clamp-2 group-hover:text-primary transition-colors">
+                  {blog.title}
+                </h3>
+                <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-1">{blog.desc}</p>
               </div>
             </motion.div>
           ))}

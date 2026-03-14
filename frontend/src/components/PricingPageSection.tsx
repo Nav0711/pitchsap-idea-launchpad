@@ -1,7 +1,10 @@
 import * as React from "react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { PricingCard, type PricingTier } from "@/components/ui/pricing-card"
 import { Tab } from "@/components/ui/pricing-tab"
+import { ChevronDown, BadgeCheck, ArrowRight } from "lucide-react"
+import { cn } from "@/lib/utils"
+import NumberFlow from "@number-flow/react"
 
 const FREQUENCIES = ["monthly", "yearly"]
 
@@ -62,6 +65,102 @@ const TIERS: PricingTier[] = [
   },
 ]
 
+/* ── Compact mobile accordion card ─────────────────────────────────── */
+const MobilePricingCard = ({
+  tier,
+  paymentFrequency,
+}: {
+  tier: PricingTier
+  paymentFrequency: string
+}) => {
+  const [open, setOpen] = React.useState(false)
+  const price = tier.price[paymentFrequency]
+
+  return (
+    <div
+      className={cn(
+        "rounded-2xl border backdrop-blur-xl bg-white/10 dark:bg-white/5 ring-1 ring-white/10 shadow-[0_4px_14px_rgba(0,0,0,0.07)] overflow-hidden transition-all duration-300",
+        tier.popular
+          ? "border-primary/50 shadow-[0_0_18px_rgba(139,92,246,0.18)]"
+          : "border-white/20 dark:border-white/10",
+        tier.highlighted && "border-primary/60"
+      )}
+    >
+      {/* Header row – always visible */}
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between px-4 py-3.5 gap-3"
+      >
+        <div className="flex items-center gap-2.5">
+          <span className="font-bold text-sm text-foreground">{tier.name}</span>
+          {tier.popular && (
+            <span className="text-[9px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+              Popular
+            </span>
+          )}
+        </div>
+
+        <div className="flex items-center gap-3 ml-auto">
+          <div className="text-right">
+            {typeof price === "number" ? (
+              <NumberFlow
+                value={price}
+                format={{ style: "currency", currency: "INR", minimumFractionDigits: 0 }}
+                className="text-lg font-extrabold text-foreground"
+              />
+            ) : (
+              <span className="text-lg font-extrabold text-foreground">{price}</span>
+            )}
+          </div>
+          <ChevronDown
+            className={cn(
+              "h-4 w-4 text-muted-foreground shrink-0 transition-transform duration-300",
+              open && "rotate-180"
+            )}
+          />
+        </div>
+      </button>
+
+      {/* Expandable body */}
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="body"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.28, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <div className="px-4 pb-4 pt-1 flex flex-col gap-3 border-t border-white/10">
+              <p className="text-xs text-muted-foreground">{tier.description}</p>
+              <ul className="space-y-1.5">
+                {tier.features.map((f, idx) => (
+                  <li key={idx} className="flex items-center gap-2 text-xs text-foreground">
+                    <BadgeCheck className="h-3.5 w-3.5 text-primary shrink-0" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <button
+                className={cn(
+                  "w-full rounded-xl font-bold text-sm h-9 flex items-center justify-center gap-1.5 transition-all",
+                  tier.highlighted || tier.popular
+                    ? "gradient-primary text-white hover:scale-[1.02]"
+                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                )}
+              >
+                {tier.cta} <ArrowRight className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
+
+/* ── Section ─────────────────────────────────────────────────────────── */
 const PricingPageSection = () => {
   const [selectedFrequency, setSelectedFrequency] = React.useState(FREQUENCIES[0])
 
@@ -97,15 +196,29 @@ const PricingPageSection = () => {
           </div>
         </div>
 
+        {/* ── DESKTOP: 4-col grid ── */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {TIERS.map((tier) => (
             <PricingCard key={tier.name} tier={tier} paymentFrequency={selectedFrequency} />
+          ))}
+        </motion.div>
+
+        {/* ── MOBILE: liquid glass accordion cards ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="sm:hidden flex flex-col gap-3"
+        >
+          {TIERS.map((tier) => (
+            <MobilePricingCard key={tier.name} tier={tier} paymentFrequency={selectedFrequency} />
           ))}
         </motion.div>
       </div>

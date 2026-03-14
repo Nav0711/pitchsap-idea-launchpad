@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu as MenuIcon, X, Sun, Moon, MessageCircle, LogOut, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/use-theme";
@@ -7,22 +8,23 @@ import pitchsapLogo from "@/assets/pitchsap-logo.png";
 
 // Shared island glass style
 const ISLAND =
-  "backdrop-blur-xl bg-white/70 dark:bg-black/30 border border-purple-200 dark:border-white/10 shadow-[0_4px_24px_rgba(109,40,217,0.1)]";
+  "backdrop-blur-2xl bg-white/40 dark:bg-black/20 border border-white/20 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)] ring-1 ring-white/20";
 
 const navLinks = [
   { label: "How it Works", href: "/#how-it-works" },
-  { label: "Pricing", href: "/#pricing" },
+  { label: "Why Pitchsap", href: "/#WhyPitchsapSection" },
   { label: "Blogs", href: "/blog" },
+  { label: "Contact Us", href: "/#footer" },
 ];
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [platformOpen, setPlatformOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const isLoggedIn = localStorage.getItem("pitchsap_logged_in") === "true";
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     localStorage.removeItem("pitchsap_token");
@@ -46,103 +48,82 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith("/#") && location.pathname === "/") {
+      e.preventDefault();
+      const id = href.substring(2);
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+        setMobileOpen(false);
+      }
+    }
+  };
+
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out pt-4 pb-3 px-4 sm:px-6 md:px-10 ${
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ease-in-out pt-4 pb-3 px-4 sm:px-6 md:px-10 ${
         isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
       }`}
     >
       {/* ── DESKTOP ─────────────────────────────────────────────────────── */}
-      <div className="hidden md:grid grid-cols-3 items-center max-w-7xl mx-auto gap-3">
+      <div className="hidden md:grid grid-cols-[1fr_auto_1fr] items-center max-w-7xl mx-auto gap-4">
 
         {/* LEFT – Logo island */}
         <div className="flex justify-start">
           <Link
             to="/"
-            className={`flex items-center gap-2.5 px-4 py-2.5 rounded-full ${ISLAND} hover:shadow-[0_4px_28px_rgba(109,40,217,0.18)] transition-all duration-300 group`}
+            className={`flex items-center gap-2.5 px-4 py-2.5 rounded-full ${ISLAND} hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] border border-white/40 dark:border-white/20 transition-all duration-300 group overflow-hidden`}
           >
             <img
               src={pitchsapLogo}
               alt="Pitchsap"
-              className="h-10 w-auto group-hover:scale-110 transition-transform duration-300"
+              className="h-12 w-auto group-hover:scale-110 drop-shadow-[0_0_8px_rgba(139,92,246,0.5)] transition-transform duration-300 relative z-10"
             />
           </Link>
         </div>
 
         {/* CENTRE – Navigation island */}
         <div className="flex justify-center">
-          <div className={`flex items-center gap-1 px-3 py-2 rounded-full ${ISLAND}`}>
+          <div className={`flex items-center gap-1 px-3 py-2 rounded-full ${ISLAND} whitespace-nowrap overflow-hidden border border-white/40 dark:border-white/20 shadow-[0_0_15px_rgba(139,92,246,0.1)]`}>
 
             {/* Standard links */}
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
-                className="px-4 py-1.5 rounded-full text-sm font-semibold text-foreground/80 hover:text-primary hover:bg-primary/8 transition-all duration-200"
+                onClick={(e) => scrollToSection(e, link.href)}
+                className="px-4 py-1.5 rounded-full text-md font-bold text-foreground/90 hover:text-primary hover:bg-primary/10 hover:shadow-[0_0_12px_rgba(139,92,246,0.2)] transition-all duration-200"
               >
                 {link.label}
               </a>
             ))}
-
-            {/* Platform dropdown */}
-            <div className="relative">
-              <button
-                onMouseEnter={() => setPlatformOpen(true)}
-                onMouseLeave={() => setPlatformOpen(false)}
-                className="flex items-center gap-1 px-4 py-1.5 rounded-full text-sm font-semibold text-foreground/80 hover:text-primary hover:bg-primary/8 transition-all duration-200"
-              >
-                Platform
-                <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${platformOpen ? "rotate-180" : ""}`} />
-              </button>
-              {platformOpen && (
-                <div
-                  onMouseEnter={() => setPlatformOpen(true)}
-                  onMouseLeave={() => setPlatformOpen(false)}
-                  className={`absolute top-full mt-2 left-1/2 -translate-x-1/2 w-52 rounded-2xl ${ISLAND} shadow-xl p-2 flex flex-col gap-0.5`}
-                >
-                  {[
-                    { label: "For Ideators", href: "/#how-it-works" },
-                    { label: "For Consultants", href: "/#how-it-works" },
-                    { label: "Capabilities", href: "/" },
-                    { label: "Community", href: "/" },
-                  ].map((item) => (
-                    <a
-                      key={item.label}
-                      href={item.href}
-                      onClick={() => setPlatformOpen(false)}
-                      className="px-4 py-2 rounded-xl text-sm font-medium text-foreground/80 hover:text-primary hover:bg-primary/8 transition-all duration-150"
-                    >
-                      {item.label}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
+           
           </div>
         </div>
 
         {/* RIGHT – Actions island */}
         <div className="flex justify-end">
-          <div className={`flex items-center gap-1 px-3 py-2 rounded-full ${ISLAND}`}>
+          <div className={`flex items-center gap-1 px-3 py-2 rounded-full ${ISLAND} border border-white/40 dark:border-white/20 shadow-[0_0_15px_rgba(139,92,246,0.1)]`}>
 
             {/* Theme toggle */}
             <button
               onClick={toggleTheme}
               aria-label="Toggle theme"
-              className="p-2 rounded-full text-foreground/70 hover:text-primary hover:bg-primary/8 transition-all duration-200"
+              className="p-2 rounded-full text-foreground/80 hover:text-primary hover:bg-primary/10 hover:shadow-[0_0_10px_rgba(139,92,246,0.2)] transition-all duration-200"
             >
               {theme === "dark"
-                ? <Sun className="h-4 w-4" />
-                : <Moon className="h-4 w-4" />}
+                ? <Sun className="h-4 w-4 drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]" />
+                : <Moon className="h-4 w-4 drop-shadow-[0_0_5px_rgba(139,92,246,0.5)]" />}
             </button>
 
             {/* Chat (logged in only) */}
             {isLoggedIn && (
               <Link
                 to="/chat"
-                className="p-2 rounded-full text-foreground/70 hover:text-primary hover:bg-primary/8 transition-all duration-200"
+                className="p-2 rounded-full text-foreground/80 hover:text-primary hover:bg-primary/10 hover:shadow-[0_0_10px_rgba(139,92,246,0.2)] transition-all duration-200"
               >
-                <MessageCircle className="h-4 w-4" />
+                <MessageCircle className="h-4 w-4 drop-shadow-[0_0_5px_rgba(139,92,246,0.5)]" />
               </Link>
             )}
 
@@ -150,13 +131,13 @@ const Navbar = () => {
             {isLoggedIn ? (
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-1.5 ml-1 px-4 py-1.5 rounded-full text-sm font-semibold text-foreground/80 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200"
+                className="flex items-center gap-1.5 ml-1 px-4 py-1.5 rounded-full text-sm font-bold text-foreground/90 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200"
               >
                 <LogOut className="h-3.5 w-3.5" /> Logout
               </button>
             ) : (
               <Link to="/auth">
-                <button className="ml-1 px-5 py-1.5 rounded-full text-sm font-bold gradient-primary text-white shadow-md hover:scale-105 hover:shadow-primary/30 transition-all duration-200">
+                <button className="ml-1 px-5 py-1.5 rounded-full text-sm font-bold gradient-primary text-white shadow-lg hover:scale-105 hover:shadow-primary/40 transition-all duration-200">
                   Get Started
                 </button>
               </Link>
@@ -200,15 +181,18 @@ const Navbar = () => {
         {/* Mobile menu */}
         {mobileOpen && (
           <div className={`mt-2 rounded-2xl ${ISLAND} px-5 py-4 flex flex-col gap-1`}>
-            <a href="/#how-it-works" className="py-2 text-sm font-semibold text-foreground/80 hover:text-primary transition-colors" onClick={() => setMobileOpen(false)}>
+            <a href="/#how-it-works" className="py-2 text-sm font-semibold text-foreground/80 hover:text-primary transition-colors" onClick={(e) => scrollToSection(e, "/#how-it-works")}>
               How it Works
             </a>
-            <a href="/#pricing" className="py-2 text-sm font-semibold text-foreground/80 hover:text-primary transition-colors" onClick={() => setMobileOpen(false)}>
-              Pricing
+            <a href="/#WhyPitchsapSection" className="py-2 text-sm font-semibold text-foreground/80 hover:text-primary transition-colors" onClick={(e) => scrollToSection(e, "/#WhyPitchsapSection")}>
+              Why Pitchsap
             </a>
             <Link to="/blog" className="py-2 text-sm font-semibold text-foreground/80 hover:text-primary transition-colors" onClick={() => setMobileOpen(false)}>
               Blogs
             </Link>
+            <a href="/#footer" className="py-2 text-sm font-semibold text-foreground/80 hover:text-primary transition-colors" onClick={(e) => scrollToSection(e, "/#footer")}>
+              Contact Us
+            </a>
             <div className="pt-2 border-t border-purple-200/60 dark:border-white/10">
               {isLoggedIn ? (
                 <Button

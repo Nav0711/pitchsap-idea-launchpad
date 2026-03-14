@@ -20,11 +20,12 @@ export const VantaBackground = () => {
         if (vantaEffect) vantaEffect.destroy();
 
         const isDark = theme === "dark";
+        const isMobile = window.innerWidth < 768;
 
         vantaEffect = window.VANTA.FOG({
           el: vantaRef.current,
-          mouseControls: true,
-          touchControls: true,
+          mouseControls: !isMobile, // Disable on mobile to save power
+          touchControls: !isMobile, // Disable on mobile to save power
           gyroControls: false,
           minHeight: 200.00,
           minWidth: 200.00,
@@ -32,9 +33,9 @@ export const VantaBackground = () => {
           midtoneColor: isDark ? 0x1e1ebb : 0x5a189a,
           lowlightColor: isDark ? 0x8900a2 : 0x3c096c,
           baseColor: isDark ? 0x000000 : 0x10002b,
-          blurFactor: 0.50,
-          speed: 2,
-          zoom: 0.5
+          blurFactor: isMobile ? 0.3 : 0.50, // Lower blur on mobile
+          speed: isMobile ? 1 : 2, // Slower on mobile
+          zoom: isMobile ? 0.3 : 0.5 // Less zoom out on mobile
         });
       }
     };

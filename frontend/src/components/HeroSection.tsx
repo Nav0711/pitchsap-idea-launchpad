@@ -45,7 +45,7 @@ const HeroSection = () => {
               Ideas are wild.
               <br />
               <span className="text-white/90 ">
-                <span className="text-transparent text-8xl bg-clip-text bg-gradient-to-r from-white via-purple-400 via-indigo-200 via-purple-500 to-white animate-brand-shimmer drop-shadow-[0_0_20px_rgba(168,85,247,0.35)]">
+                <span className="text-transparent text-5xl sm:text-7xl lg:text-8xl bg-clip-text bg-gradient-to-r from-white via-purple-400 via-indigo-200 via-purple-500 to-white animate-brand-shimmer drop-shadow-[0_0_20px_rgba(168,85,247,0.35)] leading-none py-2 block sm:inline">
                   Pitchsap
                 </span>{" "}
                 tames them.

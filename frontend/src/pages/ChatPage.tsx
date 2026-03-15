@@ -254,14 +254,14 @@ const ChatPage = () => {
                       >
                         <div
                           className={cn(
-                            "max-w-[75%] rounded-2xl px-4 py-2.5 text-sm",
+                            "max-w-[75%] rounded-2xl px-4 py-2.5 text-sm transition-all duration-300",
                             msg.sender_type === "user"
-                              ? "gradient-primary text-white rounded-br-md shadow-md"
-                              : "bg-muted text-foreground rounded-bl-md border border-border/50"
+                              ? "gradient-primary text-white rounded-br-md shadow-lg shadow-primary/20"
+                              : "glass-island backdrop-blur-md text-foreground rounded-bl-md border border-white/20 dark:border-white/5"
                           )}
                         >
-                          <p>{msg.content}</p>
-                          <p className={cn("text-[10px] mt-1 opacity-60 text-right", msg.sender_type === "user" ? "text-white" : "text-muted-foreground")}>
+                          <p className="leading-relaxed">{msg.content}</p>
+                          <p className={cn("text-[10px] mt-1.5 opacity-60 text-right font-medium", msg.sender_type === "user" ? "text-white" : "text-muted-foreground")}>
                             {msg.created_at ? new Date(msg.created_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "Now"}
                           </p>
                         </div>

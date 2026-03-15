@@ -126,7 +126,7 @@ const ChatWidget = ({ isLoggedIn }: ChatWidgetProps) => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.25 }}
-            className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-96 rounded-2xl border border-border bg-card shadow-2xl overflow-hidden flex flex-col"
+            className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-80 md:w-96 rounded-[2rem] glass-card shadow-2xl overflow-hidden flex flex-col"
             style={{ maxHeight: "min(70vh, 500px)", height: "500px" }}
           >
             {/* Header */}
@@ -159,10 +159,10 @@ const ChatWidget = ({ isLoggedIn }: ChatWidgetProps) => {
                         className={`flex ${msg.sender_type === "user" ? "justify-end" : "justify-start"}`}
                       >
                         <div
-                          className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
+                          className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm transition-all duration-300 ${
                             msg.sender_type === "user"
                               ? "gradient-primary text-white rounded-br-sm shadow-md"
-                              : "bg-muted text-foreground rounded-bl-sm border border-border/50"
+                              : "glass-island backdrop-blur-md text-foreground rounded-bl-sm border border-white/20 dark:border-white/5"
                           }`}
                         >
                           {msg.content}

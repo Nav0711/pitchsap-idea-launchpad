@@ -7,8 +7,7 @@ import { useTheme } from "@/hooks/use-theme";
 import pitchsapLogo from "@/assets/pitchsap-logo.png";
 
 // Shared island glass style
-const ISLAND =
-  "backdrop-blur-2xl bg-white/40 dark:bg-black/20 border border-white/20 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.1)] ring-1 ring-white/20";
+const ISLAND = "glass-island px-3 py-2 rounded-full whitespace-nowrap overflow-hidden transition-all duration-300";
 
 const navLinks = [
   { label: "How it Works", href: "/#how-it-works" },
@@ -73,19 +72,19 @@ const Navbar = () => {
         <div className="flex justify-start">
           <Link
             to="/"
-            className={`flex items-center gap-2.5 px-4 py-2.5 rounded-full ${ISLAND} hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] border border-white/40 dark:border-white/20 transition-all duration-300 group overflow-hidden`}
+            className={`${ISLAND} px-4 py-2.5 flex items-center gap-2.5 hover:shadow-[0_0_25px_rgba(139,92,246,0.35)] group`}
           >
             <img
               src={pitchsapLogo}
               alt="Pitchsap"
-              className="h-12 w-auto group-hover:scale-110 drop-shadow-[0_0_8px_rgba(139,92,246,0.5)] transition-transform duration-300 relative z-10"
+              className="h-10 w-auto group-hover:scale-105 transition-transform duration-300 relative z-10 brightness-110"
             />
           </Link>
         </div>
 
         {/* CENTRE – Navigation island */}
         <div className="flex justify-center">
-          <div className={`flex items-center gap-1 px-3 py-2 rounded-full ${ISLAND} whitespace-nowrap overflow-hidden border border-white/40 dark:border-white/20 shadow-[0_0_15px_rgba(139,92,246,0.1)]`}>
+          <div className={`${ISLAND} flex items-center gap-1 shadow-[0_0_20px_rgba(139,92,246,0.1)]`}>
 
             {/* Standard links */}
             {navLinks.map((link) => (
@@ -93,7 +92,7 @@ const Navbar = () => {
                 key={link.label}
                 href={link.href}
                 onClick={(e) => scrollToSection(e, link.href)}
-                className="px-4 py-1.5 rounded-full text-md font-bold text-foreground/90 hover:text-primary hover:bg-primary/10 hover:shadow-[0_0_12px_rgba(139,92,246,0.2)] transition-all duration-200"
+                className="px-4 py-1.5 rounded-full text-sm font-bold text-foreground/80 hover:text-primary hover:bg-primary/10 transition-all duration-200"
               >
                 {link.label}
               </a>
@@ -104,40 +103,40 @@ const Navbar = () => {
 
         {/* RIGHT – Actions island */}
         <div className="flex justify-end">
-          <div className={`flex items-center gap-1 px-3 py-2 rounded-full ${ISLAND} border border-white/40 dark:border-white/20 shadow-[0_0_15px_rgba(139,92,246,0.1)]`}>
+          <div className={`${ISLAND} flex items-center gap-1 shadow-[0_0_20px_rgba(139,92,246,0.1)]`}>
 
             {/* Theme toggle */}
             <button
               onClick={toggleTheme}
               aria-label="Toggle theme"
-              className="p-2 rounded-full text-foreground/80 hover:text-primary hover:bg-primary/10 hover:shadow-[0_0_10px_rgba(139,92,246,0.2)] transition-all duration-200"
+              className="p-2 rounded-full text-foreground/70 hover:text-primary hover:bg-primary/10 transition-all duration-200"
             >
               {theme === "dark"
-                ? <Sun className="h-4 w-4 drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]" />
-                : <Moon className="h-4 w-4 drop-shadow-[0_0_5px_rgba(139,92,246,0.5)]" />}
+                ? <Sun className="h-4 w-4 drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]" />
+                : <Moon className="h-4 w-4 drop-shadow-[0_0_5px_rgba(139,92,246,0.3)]" />}
             </button>
 
             {/* Chat (logged in only) */}
             {isLoggedIn && (
               <Link
                 to="/chat"
-                className="p-2 rounded-full text-foreground/80 hover:text-primary hover:bg-primary/10 hover:shadow-[0_0_10px_rgba(139,92,246,0.2)] transition-all duration-200"
+                className="p-2 rounded-full text-foreground/70 hover:text-primary hover:bg-primary/10 transition-all duration-200"
               >
-                <MessageCircle className="h-4 w-4 drop-shadow-[0_0_5px_rgba(139,92,246,0.5)]" />
+                <MessageCircle className="h-4 w-4 drop-shadow-[0_0_5px_rgba(139,92,246,0.3)]" />
               </Link>
             )}
 
-            {/* CTA */}
+            {/* Logout/Login */}
             {isLoggedIn ? (
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-1.5 ml-1 px-4 py-1.5 rounded-full text-sm font-bold text-foreground/90 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200"
+                className="flex items-center gap-1.5 ml-1 px-4 py-1.5 rounded-full text-xs font-bold text-foreground/80 hover:text-red-500 hover:bg-red-500/10 transition-all duration-200"
               >
                 <LogOut className="h-3.5 w-3.5" /> Logout
               </button>
             ) : (
               <Link to="/auth">
-                <button className="ml-1 px-5 py-1.5 rounded-full text-sm font-bold gradient-primary text-white shadow-lg hover:scale-105 hover:shadow-primary/40 transition-all duration-200">
+                <button className="ml-1 px-5 py-1.5 rounded-full text-xs font-bold gradient-primary text-white shadow-lg hover:scale-105 hover:shadow-primary/40 transition-all duration-200">
                   Get Started
                 </button>
               </Link>

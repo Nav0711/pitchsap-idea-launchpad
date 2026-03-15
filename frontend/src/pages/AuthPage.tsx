@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Navbar from "@/components/Navbar"
 import pitchsapLogo from "@/assets/pitchsap-logo.png"
+import { apiFetch } from "@/lib/api"
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true)
@@ -22,16 +23,14 @@ const AuthPage = () => {
     setIsLoading(true)
     setErrorMsg("")
 
-    const baseUrl = `${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/auth`
-
     try {
       if (isLogin) {
-        // Login — OAuth2 form-urlencoded as required by FastAPI's OAuth2PasswordRequestForm
+        // Login — OAuth2 form-urlencoded
         const formData = new URLSearchParams()
         formData.append("username", email)
         formData.append("password", password)
 
-        const res = await fetch(`${baseUrl}/login`, {
+        const res = await apiFetch("/api/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: formData.toString(),
@@ -43,7 +42,6 @@ const AuthPage = () => {
         }
 
         const data = await res.json()
-        // Store both 'token' (requested) and 'pitchsap_token' (legacy) for compatibility
         localStorage.setItem("token", data.access_token)
         localStorage.setItem("pitchsap_token", data.access_token)
         localStorage.setItem("pitchsap_logged_in", "true")
@@ -53,10 +51,9 @@ const AuthPage = () => {
         window.location.reload()
 
       } else {
-        // Registration — JSON body
-        const res = await fetch(`${baseUrl}/register`, {
+        // Registration — JSON body (defaults to application/json in apiFetch)
+        const res = await apiFetch("/api/auth/register", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password, full_name: name }),
         })
 
@@ -70,7 +67,7 @@ const AuthPage = () => {
         formData.append("username", email)
         formData.append("password", password)
 
-        const loginRes = await fetch(`${baseUrl}/login`, {
+        const loginRes = await apiFetch("/api/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: formData.toString(),

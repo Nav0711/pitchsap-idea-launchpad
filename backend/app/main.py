@@ -17,10 +17,11 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Pitchsap API", lifespan=lifespan)
 
-# CORS configuration to allow the React frontend
+# CORS configuration
+# In production (Railway), you can set specific internal/external domains or use "*"
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8080", "http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:3000"],
+    allow_origins=["*"], # Allows Vercel, Localhost, and any other client
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

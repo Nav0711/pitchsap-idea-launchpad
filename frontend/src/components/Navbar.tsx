@@ -26,6 +26,7 @@ const Navbar = () => {
   const location = useLocation();
 
   const handleLogout = () => {
+    localStorage.removeItem("token");
     localStorage.removeItem("pitchsap_token");
     localStorage.removeItem("pitchsap_logged_in");
     localStorage.removeItem("pitchsap_user");

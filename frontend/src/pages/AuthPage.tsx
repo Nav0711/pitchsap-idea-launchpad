@@ -22,24 +22,78 @@ const AuthPage = () => {
     setIsLoading(true)
     setErrorMsg("")
 
-    // Demo Login Logic: Always succeeds after a short delay
-    setTimeout(() => {
-      // Set the token key specifically requested by the user
-      localStorage.setItem("token", "dummy-demo-token")
-      
-      // Set the app's existing keys to ensure other components (Navbar, Chat) function correctly
-      localStorage.setItem("pitchsap_token", "dummy-demo-token")
-      localStorage.setItem("pitchsap_logged_in", "true")
-      localStorage.setItem("pitchsap_user", JSON.stringify({ 
-        email: email || "demo@pitchsap.com", 
-        name: name || (isLogin ? "Demo User" : "New Demo User") 
-      }))
+    const baseUrl = `${import.meta.env.VITE_API_URL || "http://localhost:8000"}/api/auth`
 
+    try {
+      if (isLogin) {
+        // Login — OAuth2 form-urlencoded as required by FastAPI's OAuth2PasswordRequestForm
+        const formData = new URLSearchParams()
+        formData.append("username", email)
+        formData.append("password", password)
+
+        const res = await fetch(`${baseUrl}/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: formData.toString(),
+        })
+
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}))
+          throw new Error(data.detail || "Login failed. Check your credentials.")
+        }
+
+        const data = await res.json()
+        // Store both 'token' (requested) and 'pitchsap_token' (legacy) for compatibility
+        localStorage.setItem("token", data.access_token)
+        localStorage.setItem("pitchsap_token", data.access_token)
+        localStorage.setItem("pitchsap_logged_in", "true")
+        localStorage.setItem("pitchsap_user", JSON.stringify({ email }))
+        
+        navigate("/chat")
+        window.location.reload()
+
+      } else {
+        // Registration — JSON body
+        const res = await fetch(`${baseUrl}/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password, full_name: name }),
+        })
+
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}))
+          throw new Error(data.detail || "Registration failed. Please try again.")
+        }
+
+        // Auto-login after successful registration
+        const formData = new URLSearchParams()
+        formData.append("username", email)
+        formData.append("password", password)
+
+        const loginRes = await fetch(`${baseUrl}/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: formData.toString(),
+        })
+
+        if (loginRes.ok) {
+          const loginData = await loginRes.json()
+          localStorage.setItem("token", loginData.access_token)
+          localStorage.setItem("pitchsap_token", loginData.access_token)
+          localStorage.setItem("pitchsap_logged_in", "true")
+          localStorage.setItem("pitchsap_user", JSON.stringify({ name, email }))
+          navigate("/chat")
+          window.location.reload()
+        } else {
+          setIsLogin(true)
+          setErrorMsg("Account created! Please log in.")
+        }
+      }
+    } catch (err: any) {
+      setErrorMsg(err.message || "An unexpected error occurred. Please try again.")
+    } finally {
       setIsLoading(false)
-      // Redirect to /chat as requested
-      navigate("/chat")
-      window.location.reload()
-    }, 800)
+    }
   }
 
   return (

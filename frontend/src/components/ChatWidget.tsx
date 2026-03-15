@@ -4,6 +4,7 @@ import { MessageCircle, X, Send, LogIn, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Link } from "react-router-dom"
+import { apiFetch } from "@/lib/api"
 
 interface ChatWidgetProps {
   isLoggedIn: boolean
@@ -31,21 +32,15 @@ const ChatWidget = ({ isLoggedIn }: ChatWidgetProps) => {
   // Fetch history when opened
   useEffect(() => {
     if (open && isLoggedIn) {
-      fetchHistory()
+      fetchHistory(true) // Pass true to show loading on initial fetch
     }
   }, [open, isLoggedIn])
 
-  const fetchHistory = async () => {
+  const fetchHistory = async (showLoading: boolean = false) => {
     try {
-      setIsLoading(true)
-      const token = localStorage.getItem("pitchsap_token")
-      if (!token) return
-
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat/history`, {
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
-      })
+      if (showLoading && messages.length === 0) setIsLoading(true)
+      
+      const res = await apiFetch(`/api/chat/history`)
       if (res.ok) {
         const data = await res.json()
         setMessages(data)
@@ -73,15 +68,8 @@ const ChatWidget = ({ isLoggedIn }: ChatWidgetProps) => {
     setIsSending(true)
     
     try {
-      const token = localStorage.getItem("pitchsap_token")
-      if (!token) throw new Error("No token")
-
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat/send`, {
+      const res = await apiFetch(`/api/chat/send`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
         body: JSON.stringify({
           content: messageContent,
           sender_type: "user"

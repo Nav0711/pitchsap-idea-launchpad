@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Navbar from "@/components/Navbar"
 import { cn } from "@/lib/utils"
+import { apiFetch } from "@/lib/api"
+import { useNavigate } from "react-router-dom"
 
 interface Contact {
   id: number
@@ -34,6 +36,14 @@ const ChatPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isSending, setIsSending] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      navigate("/auth")
+    }
+  }, [navigate])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -58,12 +68,8 @@ const ChatPage = () => {
   const fetchHistory = async (showLoading = true) => {
     try {
       if (showLoading && messages.length === 0) setIsLoading(true)
-      const token = localStorage.getItem("pitchsap_token")
-      if (!token) return
-
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat/history?limit=100`, {
-        headers: { "Authorization": `Bearer ${token}` }
-      })
+      
+      const res = await apiFetch(`/api/chat/history?limit=100`)
       
       if (res.ok) {
         const data = await res.json()
@@ -99,15 +105,8 @@ const ChatPage = () => {
     setIsSending(true)
     
     try {
-      const token = localStorage.getItem("pitchsap_token")
-      if (!token) return
-
-      await fetch(`${import.meta.env.VITE_API_URL}/api/chat/send`, {
+      await apiFetch(`/api/chat/send`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
         body: JSON.stringify({
           content: messageContent,
           sender_type: "user"

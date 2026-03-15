@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const CTASection = () => {
   return (
@@ -17,9 +18,11 @@ const CTASection = () => {
           <p className="text-muted-foreground text-lg max-w-xl mx-auto mb-8">
             Join thousands of founders who are building with confidence.
           </p>
-          <Button size="lg" className="gradient-primary text-primary-foreground border-0 text-base px-10 h-12">
-            Get Started <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
+          <Link to="/auth">
+            <Button size="lg" className="gradient-primary text-primary-foreground border-0 text-base px-10 h-12">
+              Get Started <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
         </motion.div>
       </div>
     </section>

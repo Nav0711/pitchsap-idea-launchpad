@@ -37,8 +37,12 @@ const AuthPage = () => {
         })
 
         if (!res.ok) {
-          const data = await res.json().catch(() => ({}))
-          throw new Error(data.detail || "Login failed. Check your credentials.")
+          const data = await res.json().catch(() => ({}));
+          // Switch to registration mode if login fails (helps with 'new user' flow)
+          setIsLogin(false);
+          setErrorMsg(data.detail || "Account not found. Sign up today!");
+          setIsLoading(false);
+          return;
         }
 
         const data = await res.json()
@@ -87,7 +91,12 @@ const AuthPage = () => {
         }
       }
     } catch (err: any) {
-      setErrorMsg(err.message || "An unexpected error occurred. Please try again.")
+      if (isLogin) {
+        setIsLogin(false);
+        setErrorMsg("Session error or account not found. Let's get you signed up!");
+      } else {
+        setErrorMsg(err.message || "An unexpected error occurred. Please try again.");
+      }
     } finally {
       setIsLoading(false)
     }

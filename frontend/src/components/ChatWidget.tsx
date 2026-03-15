@@ -41,7 +41,7 @@ const ChatWidget = ({ isLoggedIn }: ChatWidgetProps) => {
       const token = localStorage.getItem("pitchsap_token")
       if (!token) return
 
-      const res = await fetch("http://localhost:8000/api/chat/history", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat/history`, {
         headers: {
           "Authorization": `Bearer ${token}`
         }
@@ -76,7 +76,7 @@ const ChatWidget = ({ isLoggedIn }: ChatWidgetProps) => {
       const token = localStorage.getItem("pitchsap_token")
       if (!token) throw new Error("No token")
 
-      const res = await fetch("http://localhost:8000/api/chat/send", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat/send`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

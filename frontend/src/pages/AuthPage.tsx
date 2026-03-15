@@ -22,11 +22,12 @@ const AuthPage = () => {
     setIsLoading(true)
     setErrorMsg("")
 
+    // Uses VITE_API_URL env variable — set to your Railway backend URL in Vercel dashboard
+    const baseUrl = `${import.meta.env.VITE_API_URL}/api/auth`
+
     try {
-      const baseUrl = "http://localhost:8000/api/auth"
-      
       if (isLogin) {
-        // Login Flow (OAuth2 Form Data expected by FastAPI)
+        // Login — OAuth2 form-urlencoded as required by FastAPI's OAuth2PasswordRequestForm
         const formData = new URLSearchParams()
         formData.append("username", email)
         formData.append("password", password)
@@ -34,35 +35,46 @@ const AuthPage = () => {
         const res = await fetch(`${baseUrl}/login`, {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: formData,
+          body: formData.toString(),
         })
-        
-        if (!res.ok) {
-          const data = await res.json()
-          throw new Error(data.detail || "Login failed")
+
+        let data: any
+        try {
+          data = await res.json()
+        } catch {
+          throw new Error(`Server error (${res.status}). Please try again.`)
         }
-        
-        const data = await res.json()
+
+        if (!res.ok) {
+          throw new Error(data?.detail || "Login failed. Check your credentials.")
+        }
+
         localStorage.setItem("pitchsap_token", data.access_token)
         localStorage.setItem("pitchsap_logged_in", "true")
         localStorage.setItem("pitchsap_user", JSON.stringify({ email }))
-        
         navigate("/")
         window.location.reload()
+
       } else {
-        // Registration Flow (JSON expected by FastAPI)
+        // Registration — JSON body
         const res = await fetch(`${baseUrl}/register`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password, full_name: name }),
         })
-        
-        if (!res.ok) {
-          const data = await res.json()
-          throw new Error(data.detail || "Registration failed")
+
+        let data: any
+        try {
+          data = await res.json()
+        } catch {
+          throw new Error(`Server error (${res.status}). Please try again.`)
         }
-        
-        // Auto login after registration
+
+        if (!res.ok) {
+          throw new Error(data?.detail || "Registration failed. Please try again.")
+        }
+
+        // Auto-login after successful registration
         const formData = new URLSearchParams()
         formData.append("username", email)
         formData.append("password", password)
@@ -70,9 +82,9 @@ const AuthPage = () => {
         const loginRes = await fetch(`${baseUrl}/login`, {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: formData,
+          body: formData.toString(),
         })
-        
+
         if (loginRes.ok) {
           const loginData = await loginRes.json()
           localStorage.setItem("pitchsap_token", loginData.access_token)
@@ -80,10 +92,14 @@ const AuthPage = () => {
           localStorage.setItem("pitchsap_user", JSON.stringify({ name, email }))
           navigate("/")
           window.location.reload()
+        } else {
+          // Registration succeeded but auto-login failed — ask them to log in manually
+          setIsLogin(true)
+          setErrorMsg("Account created! Please log in.")
         }
       }
     } catch (err: any) {
-      setErrorMsg(err.message || "An error occurred")
+      setErrorMsg(err.message || "An unexpected error occurred. Please try again.")
     } finally {
       setIsLoading(false)
     }

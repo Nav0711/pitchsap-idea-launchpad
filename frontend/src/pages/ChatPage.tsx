@@ -61,7 +61,7 @@ const ChatPage = () => {
       const token = localStorage.getItem("pitchsap_token")
       if (!token) return
 
-      const res = await fetch("http://localhost:8000/api/chat/history?limit=100", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat/history?limit=100`, {
         headers: { "Authorization": `Bearer ${token}` }
       })
       
@@ -102,7 +102,7 @@ const ChatPage = () => {
       const token = localStorage.getItem("pitchsap_token")
       if (!token) return
 
-      await fetch("http://localhost:8000/api/chat/send", {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/chat/send`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
